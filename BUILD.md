@@ -5,10 +5,10 @@ Use a standard TeX Live or MiKTeX installation with pdfLaTeX.
 From the repository root:
 
 ```sh
-sh source/build.sh
+sh build.sh
 ```
 
-The compiled PDF is written to `source/hj_entropy.pdf`. Alternatively, enter the `source` directory and compile `hj_entropy.tex` twice with pdfLaTeX.
+The compiled PDF is written to `hj_entropy.pdf`. Alternatively, compile `hj_entropy.tex` twice with pdfLaTeX.
 
 Required packages: `amsart`, `fontenc`, `lmodern`, `geometry`, `amsmath`, `amssymb`, `amsthm`, `mathtools`, `mathrsfs`, `microtype`, `etoolbox`, and `hyperref`.
 

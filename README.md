@@ -7,7 +7,7 @@ A full proof of the Hillion–Johnson entropy monotonicity statement for finite 
 ## Read the article
 
 - **[Article · PDF](hj_entropy.pdf)**
-- [LaTeX source](source/hj_entropy.tex)
+- [LaTeX source](hj_entropy.tex)
 - [Source package · ZIP](hj_entropy_source.zip)
 - [Build instructions](BUILD.md)
 
@@ -26,7 +26,7 @@ The article includes:
 
 ```text
 hj_entropy.pdf          Formatted article
-source/hj_entropy.tex   Complete LaTeX source
+hj_entropy.tex   Complete LaTeX source
 hj_entropy_source.zip  Portable source package
 BUILD.md               Compilation instructions
 ```

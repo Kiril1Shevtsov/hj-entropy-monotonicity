@@ -1,0 +1,905 @@
+\documentclass[11pt,a4paper]{amsart}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=26mm,headheight=14pt,headsep=7mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,etoolbox}
+\makeatletter
+\patchcmd{\@maketitle}{\global\topskip42\p@}{\global\topskip24\p@}{}{}
+\patchcmd{\@maketitle}{\dimen@34\p@}{\dimen@20\p@}{}{}
+\makeatother
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Renyi and Tsallis entropy monotonicity for Bernoulli sums},
+ pdfauthor={Kirill Shevtsov},pdfsubject={Hillion--Johnson entropy monotonicity conjecture}}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Ber}{\operatorname{Ber}}
+\newcommand{\Bin}{\operatorname{Bin}}
+\newcommand{\D}{\mathscr D}
+\newcommand{\HH}{\mathscr H}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\supp}{\operatorname{supp}}
+\allowdisplaybreaks[1]
+\setlength{\parskip}{1pt}
+\emergencystretch=1.5em
+\title[Entropy monotonicity for Bernoulli sums]{R\'enyi and Tsallis entropy monotonicity\\for Bernoulli sums}
+\author{Kirill Shevtsov}
+\address{Faculty of Mathematics, HSE University}
+\email{keshevtsov@gmail.com}
+\date{November 2, 2026}
+\keywords{Poisson--binomial distribution, R\'enyi entropy, Tsallis entropy,
+Hillion--Johnson conjecture, log-concavity}
+\begin{document}
+\begin{abstract}
+We prove that the R\'enyi and Tsallis entropies of a sum of independent
+Bernoulli random variables are nondecreasing in each success probability
+on $[0,1/2]^n$ for every order $0\le q\le2$, as asserted in the
+Hillion--Johnson entropy monotonicity conjecture. The proof holds for
+arbitrary finite $n$ and is entirely real-variable. A quadratic
+interpolation inequality reduces the sign of the entropy derivative
+to fair binomial laws. Below order one, the local inequality follows
+from two integrating-factor identities for an explicit scalar function;
+above order one, it follows from a local third-derivative estimate.
+The boundary cases are included, and a two-coin example shows that
+monotonicity fails at every order $q>2$. We also obtain a strict
+quantitative decrease of Hellinger distance to the uniform law on a
+fixed count alphabet under any genuine coordinate increase.
+\end{abstract}
+\maketitle
+
+\section{Introduction and main result}
+
+For a sum of independent Bernoulli random variables with success
+probabilities at most $1/2$, does making one coin closer to fair
+increase the entropy of the sum? Hillion and Johnson proved this
+for Shannon entropy and formulated the R\'enyi--Tsallis extension
+as Conjecture~4.4 in \cite{HJ}. Their paper also treats order zero,
+proves the order-two case, and gives counterexamples at every order
+greater than two.
+
+We prove the full statement on $0\le q\le2$ for arbitrary finite
+Bernoulli sums, also called Poisson--binomial laws. The two open
+ranges $0<q<1$ and $1<q<2$ require different local inequalities,
+but both lead to the same quadratic interpolation on the parameter cube.
+
+For a finite probability mass function $f=(f_k)$ and $q>0$, $q\ne1$,
+the R\'enyi and Tsallis entropies are
+\begin{equation}
+ H_q(f)=\frac{\log\sum_k f_k^q}{1-q},\qquad
+ T_q(f)=\frac{1-\sum_k f_k^q}{q-1}.
+ \label{eq:entropies}
+\end{equation}
+These are the standard families introduced in \cite{Renyi,Tsallis}.
+All logarithms are natural. At $q=1$, both are defined as Shannon
+entropy,
+\[
+ H_1(f)=T_1(f)=-\sum_k f_k\log f_k,
+ \qquad 0\log0=0.
+\]
+At order zero, we set $H_0(f)=\log|\supp f|$ and
+$T_0(f)=|\supp f|-1$, without any convention for $0^0$.
+
+\begin{theorem}[Entropy monotonicity]\label{thm:main}
+Let $n\ge1$. For $p\in[0,1/2]^n$, let $f_p$ be the law of
+$\sum_{i=1}^n X_i$, where the $X_i$ are independent and
+$X_i\sim\Ber(p_i)$. If
+\[
+ 0\le p_i\le p_i'\le\tfrac12\qquad(1\le i\le n),
+\]
+then, for every real $0\le q\le2$,
+\[
+ H_q(f_p)\le H_q(f_{p'}),\qquad
+ T_q(f_p)\le T_q(f_{p'}).
+\]
+The range is sharp: for every real $q>2$, both inequalities fail for
+some coordinatewise ordered pair in $[0,1/2]^2$.
+\end{theorem}
+
+The proof first reduces coordinate monotonicity to a sign at a fair
+moving coin. For a finite log-concave background, we then establish a
+quadratic lower bound by its two endpoint values. Iterating this
+bound replaces each background coin by either a deterministic zero
+or a fair coin. Every terminal law is a fair binomial, and symmetry
+makes its fair-coordinate derivative vanish.
+
+Section~\ref{sec:scalar} proves the scalar estimate for orders below
+one by elementary differential identities and positive real
+integrals. Section~\ref{sec:lowerbellman} turns it into the required
+interpolation inequality. Section~\ref{sec:upper} proves the same
+interpolation for orders between one and two. The endpoint orders
+and sharpness are treated in Section~\ref{sec:scope}, followed by the
+Hellinger consequence in Section~\ref{sec:hellinger}.
+
+\section{The fair coordinate reduction}
+\label{sec:reduction}
+
+\subsection{It suffices to control a fair coordinate}
+
+Fix all coins but one, and call the remaining background law $g$.
+Extend every finite sequence by zero to all integer indices. The
+moving law is
+\[
+f_k(r)=(1-r)g_k+rg_{k-1},\qquad w_k=g_{k-1}-g_k.
+\]
+For $0<r<1$, with identically zero summands omitted,
+\begin{equation}
+\frac{d^2}{dr^2}T_q(f(r))
+=-q\sum_k w_k^2f_k(r)^{q-2}\le0.
+\label{eq:coordinateconcavity}
+\end{equation}
+The same formula at $q=1$ is $-\sum_k w_k^2/f_k(r)$. Thus the derivative
+at $r\le1/2$ is at least its value at $1/2$. Write that fair-coordinate
+derivative as
+\begin{equation}
+\D_q(g)=-\frac{q2^{1-q}}{q-1}
+\sum_k(g_{k-1}-g_k)(g_{k-1}+g_k)^{q-1},\qquad q\ne1,
+\label{eq:fairD}
+\end{equation}
+and
+\begin{equation}
+\D_1(g)=-\sum_k(g_{k-1}-g_k)\log(g_{k-1}+g_k).
+\label{eq:fairD1}
+\end{equation}
+Here \eqref{eq:fairD} is used only for $q>0$, $q\ne1$.
+The term at a zero pair is zero. These are continuous functionals on
+finite nonnegative sequences: for $q>0$, $q\ne1$, the magnitude of a raw
+summand is at most $(g_{k-1}+g_k)^q$, and at $q=1$ use
+$x|\log x|\to0$ as $x\downarrow0$.
+
+It is enough to show $\D_q(g)\ge0$ for every lower-cube
+Poisson--binomial background. R\'enyi and Tsallis have the same
+derivative sign, since
+\begin{equation}
+\frac{dH_q}{dr}=\frac{1}{\sum_k f_k^q}\frac{dT_q}{dr}.
+\label{eq:renyisign}
+\end{equation}
+For each fixed positive order, entropy is continuous on the fixed
+finite alphabet, including zero masses. An interior-coordinate
+monotonicity inequality therefore extends to the closed moving
+interval by continuity. No finite derivative at moving parameter
+zero is required.
+
+\subsection{Log-concavity and the vertices of the parameter cube}
+
+A nonnegative sequence is log-concave if $h_k^2\ge h_{k-1}h_{k+1}$ and its positive
+support is an interval. Bernoulli convolution preserves this property.
+Indeed, if $g_k=a h_k+b h_{k-1}$ with $a,b\ge0$, then
+\begin{align}
+g_k^2-g_{k-1}g_{k+1}
+={}&a^2(h_k^2-h_{k-1}h_{k+1})
+ +b^2(h_{k-1}^2-h_{k-2}h_k)\notag\\
+&+ab(h_{k-1}h_k-h_{k-2}h_{k+1})\ge0.
+\label{eq:LCconvolution}
+\end{align}
+The mixed determinant is nonnegative by decreasing consecutive ratios
+on the positive support, and directly at the boundary. Starting with a
+point mass proves log-concavity for all Bernoulli sums.
+
+At a background parameter vector in $\{0,1/2\}^m$, deleting the zero
+coins leaves a fair binomial law. Reflection of its edges preserves
+$g_{k-1}+g_k$ and negates $g_{k-1}-g_k$. Therefore
+\begin{equation}
+\D_q\bigl(\Bin(j,1/2)\bigr)=0\qquad(j\ge0).
+\label{eq:vertices}
+\end{equation}
+We will reduce every background to these vertices. The two ranges of
+$q$ use different local inequalities.
+
+\section{A scalar inequality for orders below one}
+\label{sec:scalar}
+
+Fix $0<q<1$. For $-1<z<1$ and $0\le s\le1$, define
+\begin{align}
+ \delta(z)&=\left(\frac{1+z}{2}\right)^q
+             -\left(\frac{1-z}{2}\right)^q,
+ &h_q(z)&=\frac{z}{\delta(z)},\quad h_q(0)=\frac{2^{q-1}}q,
+ \label{eq:delta}\\
+ B_s(z)&=(1-sz)^q-1-s^2\bigl[(1-z)^q-1\bigr],
+ &K_s(z)&=h_q(z)B_s(z).
+ \label{eq:scalarK}
+\end{align}
+The function $h_q$ is smooth and even. We shall prove the following
+shape property on the whole interval, including its negative half.
+
+\begin{lemma}[Scalar shape inequality]\label{lem:scalar}
+For $0<q<1$ and $0\le s\le1$,
+\begin{equation}
+ K_s'''(z)\ge0\quad(-1<z<1),\qquad K_s(0)=K_s''(0)=0.
+ \label{eq:Kshape}
+\end{equation}
+\end{lemma}
+
+The proof uses an auxiliary function whose positivity is obtained
+from an integrating factor. Throughout this section, put
+\[
+ \rho=1-q\in(0,1),\qquad a(x)=1-x^2,\qquad
+ c=\rho(2-\rho)=1-q^2.
+\]
+
+\begin{lemma}[Auxiliary monotonicity]\label{lem:auxiliary}
+For $|x|<1$, let
+\begin{equation}
+ F(x)=\frac12\int_{-1}^{1}(1+tx)^{-\rho}\,dt
+ =\frac{(1+x)^q-(1-x)^q}{2qx},\qquad F(0)=1.
+ \label{eq:realF}
+\end{equation}
+For $0<x<1$, define
+\[
+ d(x)=\frac{\rho}{a(x)}-\frac{F'(x)}{xF(x)},\qquad
+ W(x)=a(x)^\rho F(x)^2,\qquad H(x)=a(x)F(x).
+\]
+The function $d$ has a smooth even extension at zero, with
+$d(0)=c/3$. Moreover,
+\[
+ d(x)>0,\quad d'(x)>0,\quad H(x)>0,\quad H'(x)<0
+ \qquad(0<x<1).
+\]
+\end{lemma}
+
+\begin{proof}
+The integral in \eqref{eq:realF} follows by elementary integration.
+It shows that $F$ is positive, even, and smooth on $(-1,1)$.
+Indeed, on every compact interval $|x|\le b<1$, the base $1+tx$
+is bounded below by $1-b$, so each derivative of the integrand is
+uniformly bounded for $-1\le t\le1$. Differentiation under the
+integral gives
+\[
+ F(0)=1,\qquad F'(0)=0,\qquad F''(0)=\frac{\rho(1+\rho)}3.
+\]
+The identity
+\[
+ \frac{F'(x)}x=\int_0^1 F''(tx)\,dt
+\]
+proves smooth removability at zero. Consequently
+$d(0)=\rho-F''(0)=c/3$ and $d'(0)=0$.
+
+Consider the differential operator
+\[
+ L_qy=a y''+2(q-1)xy'-q(q-1)y.
+\]
+Direct differentiation gives, whenever $1+bx>0$,
+\begin{equation}
+ L_q[(1+bx)^q]=q(q-1)(b^2-1)(1+bx)^{q-2}.
+ \label{eq:poweroperator}
+\end{equation}
+In particular $L_q[xF]=0$. Expanding this identity yields
+\begin{equation}
+ aF''+\left[\frac2x-2(1+\rho)x\right]F'
+       -\rho(1+\rho)F=0\qquad(x\ne0).
+ \label{eq:Fode}
+\end{equation}
+Set $u=F'/F=x(\rho/a-d)$. Dividing \eqref{eq:Fode} by $F$ and
+substituting this expression gives
+\[
+ 0=a(u'+u^2)+[2/x-2(1+\rho)x]u-\rho(1+\rho)
+   =\frac ca-3ad-axd'+ax^2d^2.
+\]
+Thus
+\begin{equation}
+ xd'+3d=x^2d^2+\frac c{a^2}.
+ \label{eq:riccati}
+\end{equation}
+Differentiating the equality \eqref{eq:riccati}, rather than a sign
+inequality, gives
+\[
+ d''+\left(\frac4x-2xd\right)d'=2d^2+\frac{4c}{a^3}.
+\]
+The definition of $W$ implies $W'/W=-2xd$, and hence
+\begin{equation}
+ (x^4Wd')'=x^4W\left(2d^2+\frac{4c}{a^3}\right).
+ \label{eq:IFone}
+\end{equation}
+Since $d'(x)=O(x)$ and $W(0)=1$, the left-hand primitive tends to
+zero at the origin. The right-hand side is $O(x^4)$ there. Integrating
+\eqref{eq:IFone} from zero therefore gives the exact formula
+\begin{equation}
+ d'(x)=\frac{\displaystyle\int_0^x t^4W(t)
+       \left(2d(t)^2+\frac{4c}{(1-t^2)^3}\right)dt}
+       {x^4W(x)}>0.
+ \label{eq:positiveD}
+\end{equation}
+No sign of $d$ was needed to obtain this inequality: the only such
+term in the integrand is a square. Since $d(0)=c/3>0$, we also have
+$d>0$. Finally,
+\begin{equation}
+ \frac{H'}H=-x\left(\frac{2-\rho}{a}+d\right)<0,
+ \label{eq:Hdecrease}
+\end{equation}
+while $H>0$ follows directly from $a,F>0$.
+\end{proof}
+
+\begin{proof}[Proof of Lemma~\ref{lem:scalar}]
+The cases $s=0,1$ give $K_s\equiv0$, so assume $0<s<1$.
+By \eqref{eq:realF},
+\[
+ \widehat K_s(z):=2^{1-q}K_s(z)=\frac{B_s(z)}{qF(z)}.
+\]
+Because $F$ is even and $B_s(0)=B_s''(0)=0$,
+\[
+ \widehat K_s(0)=\widehat K_s''(0)=0,
+ \qquad \widehat K_s'(0)=-s(1-s).
+\]
+For $e\in\{-1,1\}$ and $0\le x<1$, set
+\[
+ Z_e(x)=e\widehat K_s(ex).
+\]
+The sign convention ensures that
+\begin{equation}
+ Z_e'''(x)=\widehat K_s'''(ex),\qquad
+ Z_e(0)=Z_e''(0)=0.
+ \label{eq:signbranches}
+\end{equation}
+We now derive the same positive curvature equation for both choices
+of $e$.
+
+Equation~\eqref{eq:poweroperator}, applied to every term of $B_s$, gives
+\begin{equation}
+ L_q[B_s(ex)]=q(q-1)(1-s^2)
+                [1-(1-esx)^{q-2}].
+ \label{eq:Boperator}
+\end{equation}
+For any smooth $Z$, equations \eqref{eq:Fode} and
+$F'/F=x(\rho/a-d)$ give
+\begin{equation}
+ L_q[FZ]=aF\{Z''-2d(xZ'-Z)\}.
+ \label{eq:productoperator}
+\end{equation}
+For completeness, the coefficients of $Z'$ and $Z$ on the left are
+$2aF'+2(q-1)xF=-2aFxd$ and
+$aF''+2(q-1)xF'-q(q-1)F=2aFd$, respectively.
+Since $FZ_e=eB_s(ex)/q$, it follows that
+\begin{equation}
+ Z_e''-2d(xZ_e'-Z_e)=f_e,
+ \qquad f_e=\frac{\rho(1-s^2)}H N_e,
+ \label{eq:curvatureode}
+\end{equation}
+where
+\[
+ N_e(x)=e[(1-esx)^{-1-\rho}-1],\qquad
+ N_e'(x)=(1+\rho)s(1-esx)^{-2-\rho}\ge0.
+\]
+All bases are positive. Since $N_e(0)=0$ and $H'\le0$, we have
+\begin{equation}
+ f_e\ge0,\qquad
+ f_e'=\rho(1-s^2)\left(\frac{N_e'}H-\frac{N_eH'}{H^2}\right)\ge0.
+ \label{eq:forcingsigns}
+\end{equation}
+
+Put $g_e=Z_e''$ and $V_e=xZ_e'-Z_e$. By \eqref{eq:signbranches},
+\[
+ V_e(0)=0,\qquad V_e'=xg_e,\qquad g_e=f_e+2dV_e.
+\]
+Since $W'/W=-2xd$, these identities imply
+\[
+ (WV_e)'=xWf_e.
+\]
+Integration, with $W(0)=1$, gives a positive real integral:
+\begin{equation}
+ V_e(x)=\frac1{W(x)}\int_0^x tW(t)f_e(t)\,dt\ge0.
+ \label{eq:volterra}
+\end{equation}
+Differentiating the exact identity $g_e=f_e+2dV_e$ now yields
+\begin{equation}
+ g_e'=f_e'+2d'V_e+2dV_e'
+      =f_e'+2xd f_e+(2d'+4xd^2)V_e\ge0.
+ \label{eq:thirdpositive}
+\end{equation}
+Each term has a separately established nonnegative sign, by
+Lemma~\ref{lem:auxiliary}, \eqref{eq:forcingsigns}, and
+\eqref{eq:volterra}. Thus \eqref{eq:signbranches} proves the third
+derivative inequality on both halves of $(-1,1)$. Smoothness covers
+the origin. Multiplication by $2^{q-1}>0$ returns to $K_s$ and proves
+the lemma.
+\end{proof}
+
+All integrations above take place on compact subintervals of
+$[0,1)$. No limit of the auxiliary differential equations at $x=1$
+is needed. The values at $z=\pm1$ required below will instead be
+handled by continuity of homogeneous expressions.
+
+\section{Quadratic interpolation for orders below one}
+\label{sec:lowerbellman}
+
+For positive $a,b$, define the symmetric, degree-zero function
+\begin{equation}
+\HH_q(a,b)=h_q\!\left(\frac{a-b}{a+b}\right)
+ =\frac{(a-b)(a+b)^{q-1}}{a^q-b^q},
+\qquad \HH_q(a,a)=\frac{2^{q-1}}q.
+\label{eq:edgeH}
+\end{equation}
+For a positive log-concave triple $(v,u,t)$, let
+\begin{equation}
+A=pv+(1-p)u,\quad C=pu+(1-p)t,\quad x=A+C,\quad w=A-C,
+\label{eq:localAC}
+\end{equation}
+and put
+\begin{equation}
+J(p)=-\HH_q(v,u)A^q+\HH_q(u,t)C^q+w x^{q-1}.
+\label{eq:localJ}
+\end{equation}
+
+\begin{proposition}[Local quadratic interpolation]
+\label{prop:localchord}
+If $0<q<1$, $u^2\ge vt$, and $0\le p\le1/2$, then
+\begin{equation}
+J(p)\ge(1-2p)^2J(0)+4p(1-p)J(1/2).
+\label{eq:localchord}
+\end{equation}
+Also $J(0)=J(1)=u^q[\HH_q(u,t)-\HH_q(v,u)]$.
+\end{proposition}
+
+\begin{proof}
+The endpoint identity follows from \eqref{eq:edgeH}. For the inequality,
+normalize by
+\[
+L=v+2u+t,\quad z=\frac{v-t}{L},\quad
+\kappa=\frac{u^2-vt}{L^2},\quad
+\theta=\frac{1+z}{2},\quad\eta=\frac{1-z}{2},\quad s=1-2p.
+\]
+The two edge scores are
+\[
+\alpha=z-\frac{2\kappa}{\theta},\qquad
+\gamma=z+\frac{2\kappa}{\eta}.
+\]
+Indeed,
+\[
+\frac vL=\theta^2-\kappa,\quad
+\frac uL=\theta\eta+\kappa,\quad
+\frac tL=\eta^2-\kappa,
+\]
+and $\alpha=(v-u)/(v+u)$, $\gamma=(u-t)/(u+t)$. In particular the
+entire interval from $0$ to the given $\kappa$ is feasible at fixed
+$L,z$. Moreover,
+\begin{align*}
+A&=\frac L2\theta(1-s\alpha),&
+C&=\frac L2\eta(1-s\gamma),\\
+x&=\frac L2(1-sz),&
+w&=\frac L2[z(1-sz)+4s\kappa].
+\end{align*}
+Direct substitution shows that the gap in \eqref{eq:localchord},
+divided by $(L/2)^q$, is
+\begin{align}
+G(\kappa)={}&-\theta^qK_s(\alpha)+\eta^qK_s(\gamma)+zB_s(z)
+\notag\\
+&+4\kappa\bigl[s(1-sz)^{q-1}-s^2(1-z)^{q-1}\bigr].
+\label{eq:normalizedgap}
+\end{align}
+At $\kappa=0$, both scores are $z$, and $h_q(z)(\theta^q-\eta^q)=z$,
+so $G(0)=0$. Differentiating at fixed $z$ gives
+\begin{equation}
+G'(\kappa)=2\bigl[\theta^{q-1}K_s'(\alpha)
+ +\eta^{q-1}K_s'(\gamma)\bigr]-\frac4qB_s'(z).
+\label{eq:curvaturederivative}
+\end{equation}
+
+Let $S=\theta^{q-1}+\eta^{q-1}$. The weighted mean of the scores is
+\[
+m=z+\frac{2\kappa}{S}(\eta^{q-2}-\theta^{q-2}).
+\]
+It moves away from zero: $m\ge z\ge0$ if $z\ge0$, and $m\le z\le0$
+if $z\le0$. Lemma~\ref{lem:scalar} says $K_s'$ is convex, and
+$K_s''(0)=0$ implies $K_s'$ increases on the positive half and
+decreases on the negative half. Jensen's inequality therefore gives
+\begin{equation}
+\theta^{q-1}K_s'(\alpha)+\eta^{q-1}K_s'(\gamma)
+ \ge S K_s'(m)\ge S K_s'(z).
+\label{eq:jensen}
+\end{equation}
+
+To determine the sign of the resulting lower bound, note that
+$\delta'=qS/2$ and $B_s=\delta K_s/z$. Consequently
+\begin{equation}
+2S K_s'(z)-\frac4qB_s'(z)
+=\frac4q[z\delta'(z)-\delta(z)]
+  \left(\frac{K_s(z)}z\right)'.
+\label{eq:geometricidentity}
+\end{equation}
+No power series is needed here: direct differentiation gives
+\[
+\delta''(z)=2^{-q}q(q-1)
+ [(1+z)^{q-2}-(1-z)^{q-2}],
+\]
+which has the sign of $z$. Thus $M(z)=z\delta'(z)-\delta(z)$
+satisfies $M(0)=0$ and $M'(z)=z\delta''(z)\ge0$, so $M(z)$
+also has the sign of $z$.
+Meanwhile $zK_s'-K_s$ vanishes at zero and has derivative
+$zK_s''(z)\ge0$ on both sides of zero. It therefore also has the
+sign of $z$, as does $(K_s/z)'$. The product in
+\eqref{eq:geometricidentity} is nonnegative. At zero the quotient is
+smoothly removable, since
+\[
+ \frac{K_s(z)}z=\int_0^1K_s'(tz)\,dt,\qquad
+ \left.\left(\frac{K_s(z)}z\right)'\right|_{z=0}
+ =\frac12 K_s''(0)=0.
+\]
+
+Equations \eqref{eq:curvaturederivative}--\eqref{eq:geometricidentity}
+show $G'(\kappa)\ge0$. Integrating from $0$ to $\kappa$ proves the
+proposition.
+\end{proof}
+
+\subsection{Zeros and exact telescoping}
+
+The function $h_q$ is bounded and continuous on $[-1,1]$, with
+$h_q(\pm1)=1$. Hence
+\[
+\HH_q(a,b)[pa+(1-p)b]^q
+\]
+extends continuously to all nonnegative pairs, with value zero at
+$(0,0)$. The raw term $w x^{q-1}$ extends as well, since its magnitude
+is at most $x^q$. Every nonnegative log-concave triple can be
+approximated by positive ones: take $v_\eps=v+\eps$, $t_\eps=t+\eps$,
+and $u_\eps=\max\{u,\sqrt{v_\eps t_\eps}\}+\eps$.
+Thus Proposition~\ref{prop:localchord} includes zero entries by
+continuity.
+
+Now let $h$ be any finite log-concave sequence and
+$g_k(p)=(1-p)h_k+ph_{k-1}$. At the triple
+$(v,u,t)=(h_{k-2},h_{k-1},h_k)$, the masses in \eqref{eq:localAC} are
+$A=g_{k-1}(p)$ and $C=g_k(p)$. The first two terms of
+\eqref{eq:localJ} cancel exactly when summed over all $k$.
+All terms outside the finite support are zero. Multiplying the summed
+inequality by $q2^{1-q}/(1-q)>0$ proves the following.
+
+\begin{theorem}[Below-one Bellman inequality]
+\label{thm:lowerbellman}
+For $0<q<1$, a finite log-concave $h$, and $0\le p\le1/2$,
+\begin{equation}
+\D_q(h*\Ber(p))\ge
+ (1-2p)^2\D_q(h)+4p(1-p)\D_q(h*\Ber(1/2)).
+\label{eq:globalchord}
+\end{equation}
+\end{theorem}
+
+Both coefficients in \eqref{eq:globalchord} are nonnegative and sum
+to one. For a Poisson--binomial background with parameters
+$p_1,\ldots,p_m\in[0,1/2]$, apply the inequality successively to each
+parameter. The remaining background at each step is log-concave by
+\eqref{eq:LCconvolution}. The resulting lower bound is a convex combination of the
+values at all vertices $\eps\in\{0,1\}^m$, with weights
+\[
+W_\eps=\prod_{\eps_i=0}(1-2p_i)^2
+        \prod_{\eps_i=1}4p_i(1-p_i).
+\]
+Each vertex value is zero by \eqref{eq:vertices}, so $\D_q(g)\ge0$.
+Equations \eqref{eq:coordinateconcavity} and \eqref{eq:renyisign}
+prove Theorem~\ref{thm:main} for $0<q<1$.
+
+\section{Quadratic interpolation for orders between one and two}
+\label{sec:upper}
+
+We give a separate proof for $1<q<2$. Fix $0<p<1$ and a positive
+log-concave triple $(v,u,t)$. Use $A,C,x,w$ from
+\eqref{eq:localAC}, and set
+\[
+B=v-t,\qquad E=v-2u+t,\qquad T=u^2-vt\ge0.
+\]
+Define
+\begin{align}
+\mathcal K_{p,q}(v,u,t)
+ &=3EB^2x^{q-3}+(q-3)wB^3x^{q-4},\notag\\
+\mathcal H_{p,q}(a,b)
+ &=2^{q-1}\frac{(a-b)^3}{[pa+(1-p)b]^{3-q}},\notag\\
+R_q&=\mathcal K_{p,q}(v,u,t)
+       -\mathcal H_{p,q}(v,u)+\mathcal H_{p,q}(u,t).
+\label{eq:upperR}
+\end{align}
+
+\begin{lemma}[Upper-range local inequality]
+\label{lem:upperlocal}
+$R_q\ge0$ for every positive log-concave triple and $1\le q\le2$.
+The inequality extends to nonnegative log-concave triples by continuity.
+\end{lemma}
+
+\begin{proof}
+The elementary identities
+\begin{equation}
+wB-Ex=2T,\qquad (v-u)x=AB-T,\qquad(u-t)x=CB+T
+\label{eq:upperidentities}
+\end{equation}
+give two exact endpoint formulas:
+\begin{equation}
+R_1=\frac{T^2\{3wB\,AC+(A^2+C^2)T\}}{x^3A^2C^2},
+\qquad R_2=\frac{2T^3}{x^2AC}.
+\label{eq:upperendpoints}
+\end{equation}
+They follow by substituting \eqref{eq:upperidentities} into the two
+cubic correction terms and expanding. For example, at $q=1$,
+multiply by $x^3A^2C^2$: the resulting identity is
+\[
+3EB^2xA^2C^2-2wB^3A^2C^2
+ -(AB-T)^3C^2+(CB+T)^3A^2
+=T^2[3wBAC+(A^2+C^2)T],
+\]
+using $Ex=wB-2T$, $x=A+C$ and $w=A-C$. At $q=2$,
+multiplication by $x^2AC$ similarly gives
+\[
+3EB^2xAC-wB^3AC
+ -2(AB-T)^3C/x+2(CB+T)^3A/x=2T^3.
+\]
+
+
+The formula for $R_2$ is nonnegative. The formula for $R_1$ is immediate
+when $wB\ge0$. Otherwise the reflection
+$(v,u,t,p)\mapsto(t,u,v,1-p)$ lets us suppose $B>0$ and $w<0$.
+Log-concavity and
+$w=p(v-u)+(1-p)(u-t)$ then force $u>v>t$. Put $a=u-v$, $b=u-t$.
+Here $0<a<b\le u$, $B=b-a$, and $-w\le a$. Hence
+\[
+T=u(a+b)-ab\ge b^2\ge4a(b-a)\ge4(-wB).
+\]
+The first difference is $(u-b)(a+b)\ge0$ and the second inequality is
+$(b-2a)^2\ge0$. Writing $d=-wB>0$, the bracket in $R_1$ is at least
+\[
+d[4(A^2+C^2)-3AC]\ge5dAC>0.
+\]
+This proves the $q=1$ endpoint.
+
+For $1<q<2$, first suppose $E\le0$. For differentiable $\psi$, define
+the linear functional
+\begin{equation}
+\mathcal L(\psi)=3EB^2\psi(x)+wB^3\psi'(x)
+-4[(v-u)^3\psi(2A)-(u-t)^3\psi(2C)].
+\label{eq:Lfunctional}
+\end{equation}
+It equals $R_q$ when $\psi(y)=y^{q-3}$. The positive integral
+representation
+\begin{equation}
+y^{q-3}=\frac1{I_q}\int_0^\infty
+ r^{q-2}(y+r)^{-2}\,dr,
+\quad I_q=\int_0^\infty\frac{r^{q-2}}{(1+r)^2}\,dr>0
+\label{eq:shiftrep}
+\end{equation}
+shows that $R_q$ is a positive weighted integral of $R_1$ evaluated
+on the common-shifted triple $(v+r/2,u+r/2,t+r/2)$. Indeed, the
+differences $B,E,w$ remain fixed, while $x,2A,2C$ all increase by $r$.
+The shifted determinant is $T-rE/2\ge0$, so every such $R_1$ is
+nonnegative. Differentiation and the integral interchange are
+justified locally uniformly for positive arguments by integrable
+dominating powers: near zero the weight is $r^{q-2}$, and at infinity
+the integrands are $O(r^{q-4})$ or faster; differentiating a shifted
+inverse square only improves its decay.
+Thus $R_q\ge0$ if $E\le0$.
+
+The remaining case can be covered whenever $wB\ge0$. Normalize by
+\[
+z=w/x,\qquad r=B/x,\qquad \tau=T/x^2.
+\]
+Reflection lets us assume $z,r\ge0$; $|z|<1$ and $\tau\ge0$.
+Define
+\begin{align*}
+U(z)&=2-(1+z)^{q-1}-(1-z)^{q-1},\\
+V(z)&=qz-\tfrac12[(1+z)^q-(1-z)^q],\\
+W(z)&=(1+z)^{q-3}+(1-z)^{q-3}.
+\end{align*}
+Expanding the two cubes using \eqref{eq:upperidentities} gives exactly
+\begin{equation}
+\frac{R_q}{x^q}=V(z)r^3-3U(z)r^2\tau
+ +\frac{6U'(z)}{q-1}r\tau^2+4W(z)\tau^3.
+\label{eq:uppernormal}
+\end{equation}
+For $0<z<1$, all four functions $U,U',V,W$ are positive, and
+\[
+U''=(q-1)(2-q)W>0,\qquad
+V(z)=\frac q2\int_0^zU(a)\,da.
+\]
+Since $U'$ is increasing,
+\begin{equation}
+U(z)^2=2\int_0^zU(a)U'(a)\,da
+ \le\frac4q U'(z)V(z).
+\label{eq:UVbound}
+\end{equation}
+For $r>0$, the first three terms in \eqref{eq:uppernormal} form a
+quadratic in $\tau$ with positive constant and quadratic
+coefficients. Its squared linear coefficient divided by four times
+their product is at most
+\[
+\frac{9U^2r^4}{4Vr^3\,[6U'r/(q-1)]}
+ \le\frac{3(q-1)}{2q}<1.
+\]
+Thus the quadratic is nonnegative, and so is the last term in
+\eqref{eq:uppernormal}. If $z=0$ or $r=0$, the first three terms
+vanish and the conclusion is immediate.
+
+These cases exhaust all triples: the identity $Ex=wB-2T$ shows
+that $wB<0$ implies $E<0$. This proves $R_q\ge0$.
+For fixed $p\in(0,1)$, both the two-point correction and the local
+kernel have magnitude bounded by a constant times the $q$th power
+of the sum of their arguments. They therefore extend continuously
+at zero. Approximation by positive log-concave triples, as in
+Section~\ref{sec:lowerbellman}, finishes the proof.
+\end{proof}
+
+\subsection{The same quadratic Bellman inequality above one}
+
+Let $h$ be a finite log-concave background and
+$g_k(p)=(1-p)h_k+ph_{k-1}$. Write $D(p)=\D_q(g(p))$.
+For the local triple at index $k$, $x'=B$ and $w'=E$.
+Differentiating \eqref{eq:fairD} three times yields
+\begin{equation}
+D'''(p)=q(2-q)2^{1-q}
+\sum_k\mathcal K_{p,q}(h_{k-2},h_{k-1},h_k)\ge0.
+\label{eq:Dthird}
+\end{equation}
+The inequality follows from Lemma~\ref{lem:upperlocal}, because all
+two-point correction terms telescope. The function $D$ is continuous
+on $[0,1]$ and $C^3$ on $(0,1)$: every non-identically-zero
+adjacent mass sum is positive there. Also $D(0)=D(1)$ by shift
+invariance. No derivative regularity at the endpoints is needed.
+
+\begin{lemma}[Three-node quadratic interpolation]
+\label{lem:quadraticbridge}
+If $D\in C[0,1]\cap C^3(0,1)$, $D'''\ge0$, and $D(0)=D(1)$, then
+\[
+D(p)\ge (1-2p)^2D(0)+4p(1-p)D(1/2),\qquad0\le p\le1/2.
+\]
+\end{lemma}
+\begin{proof}
+Let $Q(p)=(1-2p)^2D(0)+4p(1-p)D(1/2)$, the quadratic
+interpolant at $0,1/2,1$. For $0<p<1/2$, subtract from $D-Q$ the
+cubic $\lambda t(t-1/2)(t-1)$ chosen to make the difference zero
+at $t=p$. This difference has four distinct zeros in $[0,1]$.
+Three applications of Rolle's theorem give
+$6\lambda=D'''(\xi)\ge0$ for some $\xi\in(0,1)$.
+Since $p(p-1/2)(p-1)>0$, $D(p)-Q(p)\ge0$.
+At $p=0,1/2$ there is equality by definition.
+\end{proof}
+
+Consequently the below-one Bellman inequality \eqref{eq:globalchord}
+holds also for every $1<q<2$, with exactly the same coefficients,
+for every finite log-concave background. The same product-weight
+rounding argument already given after Theorem~\ref{thm:lowerbellman}
+therefore applies without modification: iterating over the finite
+background parameters gives a convex combination of fair-binomial
+vertex values, all zero. Thus $\D_q(g)\ge0$, proving
+Theorem~\ref{thm:main} for $1<q<2$ by the common reduction.
+
+\section{Endpoint orders and sharpness}
+\label{sec:scope}
+
+At $q=0$, let $r$ be the number of strictly positive Bernoulli
+parameters. On the lower cube the sum has support $\{0,\ldots,r\}$,
+so $T_0=r$ and $H_0=\log(r+1)$. Increasing a coordinate cannot decrease
+$r$, proving this endpoint directly.
+
+At $q=1$, take the pointwise limit $T_q(f)\to-\sum_k f_k\log f_k$ on
+each fixed finite support. Passing to the limit in the already proved
+monotonicity inequality gives Shannon monotonicity, including all
+zero-probability boundary cases.
+
+At $q=2$, the fair derivative is identically zero for every finite
+background:
+\[
+\D_2(g)=-\sum_k(g_{k-1}^2-g_k^2)=0.
+\]
+Coordinate concavity again gives monotonicity for the moving parameter
+below one half. This completes the positive part of
+Theorem~\ref{thm:main}.
+
+\subsection{A counterexample for every \texorpdfstring{$q>2$}{q greater than two}}
+
+Fix $q>2$ and set
+\[
+r=\frac{q-2}{q(q-1)}\in(0,1/2).
+\]
+The upper bound follows from
+$q(q-1)-2(q-2)=q^2-3q+4=(q-3/2)^2+7/4>0$.
+For the one-coin background $g=(1-r,r)$, formula \eqref{eq:fairD}
+becomes
+\[
+\D_q(g)=-\frac{q2^{1-q}}{q-1}
+ [1-2r-(1-r)^q+r^q].
+\]
+The third derivative of $(1-r)^q$ in $r$ is negative. Taylor's theorem
+therefore gives
+\[
+(1-r)^q\le1-qr+\frac{q(q-1)}2r^2.
+\]
+The bracket is consequently at least
+\[
+(q-2)r-\frac{q(q-1)}2r^2+r^q
+=\frac{q-2}{2}r+r^q>0.
+\]
+Thus $\D_q(g)<0$. Continuity places a negative derivative at moving
+parameters strictly below and sufficiently close to $1/2$ as well.
+R\'enyi has the same sign by \eqref{eq:renyisign}. For example,
+$q=3$ and $r=1/6$ give exactly $\D_3(g)=-5/144$.
+
+\section{A quantitative Hellinger consequence}
+\label{sec:hellinger}
+
+The order $q=1/2$ gives a quantitative comparison in Hellinger distance.
+The reference distribution is uniform on a fixed alphabet, even when
+some Bernoulli parameters vanish.
+
+\begin{corollary}[Strict quantitative improvement toward fixed-alphabet uniform]
+\label{cor:hellinger}
+Let $n\ge1$, let $f$ be the law of a sum of independent Bernoulli
+variables with parameters in $[0,1/2]^n$, and let $U_n$ be uniform on
+$\{0,\ldots,n\}$. Use the convention
+\[
+h^2(f,U_n)=1-\sum_{k=0}^n\sqrt{\frac{f_k}{n+1}}
+ =\frac12\sum_{k=0}^n
+   \left(\sqrt{f_k}-\frac1{\sqrt{n+1}}\right)^2.
+\]
+Every genuine coordinate increase strictly decreases this distance.
+More precisely, freeze the other $n-1$ coins with law $g$, extend it
+by zero to all integers, put $w_k=g_{k-1}-g_k$, and write
+$f_k(r)=(1-r)g_k+rg_{k-1}$. For $0\le a<b\le1/2$,
+\begin{equation}
+h^2(f(a),U_n)-h^2(f(b),U_n)
+\ge\frac{(1/2-a)^2-(1/2-b)^2}{8\sqrt{n+1}}
+      \sum_k w_k^2>0.
+\label{eq:hellingerbound}
+\end{equation}
+Consequently a coordinatewise ordered pair of distinct parameter
+vectors gives strict decrease. Independent coordinate thinning
+$p_i\mapsto t_ip_i$, $0\le t_i\le1$, cannot decrease the distance,
+and increases it strictly if at least one parameter changes.
+\end{corollary}
+
+\begin{proof}
+At order $1/2$,
+\[
+T_{1/2}(f)=2\left(\sum_k\sqrt{f_k}-1\right),
+\qquad
+h^2(f(a),U_n)-h^2(f(b),U_n)
+=\frac{T_{1/2}(f(b))-T_{1/2}(f(a))}{2\sqrt{n+1}}.
+\]
+For $0<r<1/2$, every non-identically-zero $f_k(r)$ is positive and
+at most one. Write $S_g=\sum_k w_k^2$. The exact second derivative
+\eqref{eq:coordinateconcavity} gives
+\[
+\frac{d^2}{dr^2}T_{1/2}(f(r))
+=-\frac12\sum_k w_k^2 f_k(r)^{-3/2}\le-\frac12 S_g.
+\]
+Theorem~\ref{thm:main} at the open order $1/2$, through its established
+fair-derivative sign, gives
+\[
+\left.\frac d{dr}T_{1/2}(f(r))\right|_{r=1/2}
+=\D_{1/2}(g)\ge0.
+\]
+Backward integration yields
+\[
+\frac d{dr}T_{1/2}(f(r))\ge\frac12(1/2-r)S_g.
+\]
+Integrating from $a$ to $b$ yields
+\[
+T_{1/2}(f(b))-T_{1/2}(f(a))
+\ge\frac14[(1/2-a)^2-(1/2-b)^2]S_g.
+\]
+Division by $2\sqrt{n+1}$ proves \eqref{eq:hellingerbound} for $a>0$.
+If $a=0$, first integrate from $\eps>0$ and pass to $\eps\downarrow0$
+by finite-alphabet continuity; no finite derivative at zero is used.
+A finite nonzero probability sequence cannot satisfy
+$g_{k-1}=g_k$ for every integer, so $S_g>0$. The square difference is
+positive for $a<b\le1/2$, also when $b=1/2$. A finite path of
+coordinate changes proves the vector comparison and its thinning
+consequence. The reference $U_n$ never changes along this path.
+\end{proof}
+
+\begin{thebibliography}{9}
+\bibitem{HJ}
+E. Hillion and O. Johnson,
+\emph{A proof of the Shepp--Olkin entropy monotonicity conjecture},
+Electronic Journal of Probability \textbf{24} (2019), paper no.~126, 1--14.
+\href{https://doi.org/10.1214/19-EJP380}{doi:10.1214/19-EJP380}.
+\href{https://arxiv.org/abs/1810.09791}{arXiv:1810.09791}.
+\bibitem{Renyi}
+A. R\'enyi,
+\emph{On measures of entropy and information},
+Proceedings of the Fourth Berkeley Symposium on Mathematical
+Statistics and Probability, Vol.~1, University of California Press,
+Berkeley, 1961, pp.~547--561.
+\bibitem{Tsallis}
+C. Tsallis,
+\emph{Possible generalization of Boltzmann--Gibbs statistics},
+Journal of Statistical Physics \textbf{52} (1988), 479--487.
+\href{https://doi.org/10.1007/BF01016429}{doi:10.1007/BF01016429}.
+\end{thebibliography}
+\end{document}
